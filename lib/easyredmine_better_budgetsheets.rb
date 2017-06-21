@@ -1,1 +1,2 @@
 require "better_budgetsheets/hooks"
+require "better_budgetsheets/time_entry_grouping_service"
