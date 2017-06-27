@@ -1,13 +1,22 @@
+<style type="text/css">
+tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
+</style>
+
 <h1><%= @query_name %> <%= @time_range[:from] %> - <%= @time_range[:from] %></h1>
-<table>
+<table class="factura-sheet">
   <thead>
     <tr>
       <% @time_entry_groups.groups.each do |group_name| %>
-        <th></th>
+        <th><%= group_name %></th>
       <% end %>
       <% @time_entry_groups.columns.each do |col_name| %>
         <th><%= col_name %></th>
       <% end %>
     </tr>
   </thead>
+  <tbody>
+    <% @time_entry_groups.root_sets.each do |set| %>
+      <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
+    <% end %>
+  </tbody>
 </table>

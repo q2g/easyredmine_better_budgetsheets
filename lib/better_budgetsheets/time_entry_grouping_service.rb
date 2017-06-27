@@ -24,6 +24,10 @@ class BetterBudgetsheets::TimeEntryGroupingService
     end
   end
 
+  def colspan_at_index(index)
+    (@columns.size + @groups.size) - index
+  end
+
   def field_label_name_for(field_name, id)
     case field_name.to_sym
     when :project_id
@@ -41,10 +45,13 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   class EntrySet
 
-    attr_reader :entries, :sub_sets
+    attr_reader :entries, :sub_sets, :field_name, :index
 
     def initialize(grouping_service, field_name, entries, index)
       @entries          = entries
+      @field_name = field_name
+      @index = index
+
       next_group_column  = grouping_service.groups[index+1]
 
       if next_group_column
@@ -53,7 +60,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
             grouping_service,
             grouping_service.field_label_name_for(next_group_column, id),
             @entries.where(next_group_column => id),
-            index+1
+            @index+1
           )
         end
       end

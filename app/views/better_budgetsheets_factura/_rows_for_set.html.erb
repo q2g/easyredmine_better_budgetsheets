@@ -1,0 +1,20 @@
+<tr class="entry-group-rows">
+  <% set.index.times do %>
+    <td></td>
+  <% end %>
+  <td colspan="<%= time_entry_groups.colspan_at_index(set.index) %>"><%= set.field_name %></td>
+</tr>
+<% if set.sub_sets %>
+  <% set.sub_sets.each do |subset| %>
+    <%= render "better_budgetsheets_factura/rows_for_set", set: subset, time_entry_groups: time_entry_groups %>
+  <% end %>
+<% else %>
+  <% set.entries.each do |time_entry| %>
+    <tr>
+      <td colspan="<%= time_entry_groups.colspan_at_index(set.index)-1 %>"></td>
+      <% time_entry_groups.columns.each do |col| %>
+        <td><%= time_entry.send(col) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>
