@@ -1,0 +1,13 @@
+<h1><%= @query_name %> <%= @time_range[:from] %> - <%= @time_range[:from] %></h1>
+<table>
+  <thead>
+    <tr>
+      <% @time_entry_groups.groups.each do |group_name| %>
+        <th></th>
+      <% end %>
+      <% @time_entry_groups.columns.each do |col_name| %>
+        <th><%= col_name %></th>
+      <% end %>
+    </tr>
+  </thead>
+</table>

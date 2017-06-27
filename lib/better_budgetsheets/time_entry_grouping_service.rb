@@ -29,7 +29,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
     when :project_id
       Project.find(id).name
     when :user_id
-      User.find(id).full_name
+      User.find(id).name
     when :issue_id
       Issue.find(id).subject
     when :activity_id

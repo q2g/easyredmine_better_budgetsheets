@@ -1,2 +1,2 @@
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf', :source => 'https://rubygems.org/'
+gem 'wkhtmltopdf-binary', :source => 'https://rubygems.org/'
