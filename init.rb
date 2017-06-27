@@ -8,7 +8,3 @@ end
 
 require 'easyredmine_better_budgetsheets'
 
-
-Rails.application.config.after_initialize do
-
-end

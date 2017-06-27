@@ -6,8 +6,8 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def initialize(entries, columns = [:comments, :hours, :spent_on], groups = [:project_id, :user_id, :issue_id])
     @entries = entries
-    @columns = columns
-    @groups  = groups
+    @columns = columns.map(&:to_sym)
+    @groups  = groups.map(&:to_sym)
     load_root_set
   end
 
@@ -52,7 +52,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
           EntrySet.new(
             grouping_service,
             grouping_service.field_label_name_for(next_group_column, id),
-            @entries.where(@next_group_column => id),
+            @entries.where(next_group_column => id),
             index+1
           )
         end

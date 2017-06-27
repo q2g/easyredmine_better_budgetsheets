@@ -21,9 +21,7 @@ module BetterBudgetsheets
       if additional_params[:columns]
 
         content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura),
-            better_budgetsheets_factura_create_path(
-              context[:project], :time_entry_ids => context[:time_entries].collect(&:id)
-            ).merge(additional_params),
+            better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
             :class => 'icon icon-print'
           ))
       end

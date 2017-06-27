@@ -1,6 +1,6 @@
-class BetterBudgetsheets::FacturaController < ApplicationController
+class BetterBudgetsheetsFacturaController < ApplicationController
 
-  def create
+  def new
     @time_entries = TimeEntry.where(id: params[:time_entry_ids])
     @column_names = params[:columns]
     @query_name   = params[:query_name] || "Budgetsheet"
@@ -13,7 +13,7 @@ class BetterBudgetsheets::FacturaController < ApplicationController
     @time_entry_groups = BetterBudgetsheets::TimeEntryGroupingService.new(@time_entries)
     @time_entry_groups.load_root_set
 
-    render template: "better_budgetsheets/sheet"
+    render template: "/better_budgetsheets_factura/sheet"
   end
 
 end

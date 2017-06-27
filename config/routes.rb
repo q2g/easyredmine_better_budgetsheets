@@ -1,5 +1,3 @@
-namespace "better_budgetsheets" do
-  namespace :factura do
-    get :create
-  end
+namespace "better_budgetsheets_factura" do
+  get :new
 end
