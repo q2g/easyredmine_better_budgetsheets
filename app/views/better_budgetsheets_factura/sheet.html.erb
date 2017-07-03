@@ -6,11 +6,10 @@ tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: sol
 <table class="factura-sheet">
   <thead>
     <tr>
-      <% @time_entry_groups.groups.each do |group_name| %>
-        <th><%= group_name %></th>
-      <% end %>
+      <th></th>
+      <th></th>
       <% @time_entry_groups.columns.each do |col_name| %>
-        <th><%= col_name %></th>
+        <th><%= budget_sheet_header_label(col_name) %></th>
       <% end %>
     </tr>
   </thead>

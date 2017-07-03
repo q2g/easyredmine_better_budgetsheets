@@ -11,8 +11,5 @@ require 'easyredmine_better_budgetsheets'
 
 Rails.application.config.after_initialize do
   view_path = File.expand_path("../app/views", __FILE__)
-
   ActionController::Base.prepend_view_path(view_path)
-  ActionMailer::Base.prepend_view_path(view_path)
-
 end

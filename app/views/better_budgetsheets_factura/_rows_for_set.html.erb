@@ -1,8 +1,7 @@
 <tr class="entry-group-rows">
-  <% set.index.times do %>
-    <td></td>
-  <% end %>
-  <td colspan="<%= time_entry_groups.colspan_at_index(set.index) %>"><%= set.field_name %></td>
+  <td><%= time_entry_groups.groups[set.index]  %></td>
+  <td colspan="" width="20%"><%= set.field_name %></td>
+  <td colspan="<%= time_entry_groups.columns.size %>"></td>
 </tr>
 <% if set.sub_sets %>
   <% set.sub_sets.each do |subset| %>
@@ -11,9 +10,9 @@
 <% else %>
   <% set.entries.each do |time_entry| %>
     <tr>
-      <td colspan="<%= time_entry_groups.colspan_at_index(set.index)-1 %>"></td>
+      <td colspan="2"></td>
       <% time_entry_groups.columns.each do |col| %>
-        <td><%= time_entry.send(col) %></td>
+        <td><%= bugdet_sheet_display_value_for(time_entry, col) %></td>
       <% end %>
     </tr>
   <% end %>

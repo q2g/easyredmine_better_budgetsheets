@@ -4,7 +4,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   attr_accessor :groups, :root_sets
 
-  def initialize(entries, columns = [:comments, :hours, :spent_on], groups = [:project_id, :user_id, :issue_id])
+  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: [:project_id, :user_id, :issue_id])
     @entries = entries
     @columns = columns.map(&:to_sym)
     @groups  = groups.map(&:to_sym)
@@ -17,7 +17,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
     @root_sets = root_ids.map do |id|
       EntrySet.new(
         self,
-        field_label_name_for(field_name, id),
+        grouped_field_label_name_for(field_name, id),
         @entries.where(field_name => id),
         0
       )
@@ -28,7 +28,8 @@ class BetterBudgetsheets::TimeEntryGroupingService
     (@columns.size + @groups.size) - index
   end
 
-  def field_label_name_for(field_name, id)
+  # name for grouped columns
+  def grouped_field_label_name_for(field_name, id)
     case field_name.to_sym
     when :project_id
       Project.find(id).name
@@ -58,7 +59,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
         @sub_sets = @entries.group(next_group_column).pluck(next_group_column).map do |id|
           EntrySet.new(
             grouping_service,
-            grouping_service.field_label_name_for(next_group_column, id),
+            grouping_service.grouped_field_label_name_for(next_group_column, id),
             @entries.where(next_group_column => id),
             @index+1
           )

@@ -1,2 +1,11 @@
 de:
   button_better_budgetsheet_create_factura: "Faktura erstellen"
+  button_better_budgetsheet_preview_factura: "Vorschau Faktura erstellen"
+  better_budgetsheets:
+    columns:
+      activity: Aktivität
+      issue: Ticket
+      hours: Stunden
+      created_on: Erstellt
+      project: Projekt
+      spent_on: Gebucht am
