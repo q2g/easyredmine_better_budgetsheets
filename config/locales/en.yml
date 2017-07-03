@@ -4,7 +4,11 @@ en:
     columns:
       activity: Actitity
       issue: Issue
+      issue_id: Issue
       hours: Hours
       created_on: Created at
       project: Project
+      project_id: Project
       spent_on: Spent on
+      user: User
+      comments: Comments

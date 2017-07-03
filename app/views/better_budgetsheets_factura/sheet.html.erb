@@ -1,12 +1,13 @@
 <style type="text/css">
 tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
+tr.entry-group-rows td.first-col { width: 3%;}
 </style>
 
 <h1><%= @query_name %> <%= @time_range[:from] %> - <%= @time_range[:from] %></h1>
 <table class="factura-sheet">
   <thead>
     <tr>
-      <th></th>
+      <th class="first-col"></th>
       <th></th>
       <% @time_entry_groups.columns.each do |col_name| %>
         <th><%= budget_sheet_header_label(col_name) %></th>

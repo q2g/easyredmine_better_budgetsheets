@@ -5,7 +5,11 @@ de:
     columns:
       activity: Aktivität
       issue: Ticket
+      issue_id: Ticket
       hours: Stunden
       created_on: Erstellt
       project: Projekt
+      project_id: Projekt
       spent_on: Gebucht am
+      user_id: Mitarbeiter
+      comments: Kommentar
