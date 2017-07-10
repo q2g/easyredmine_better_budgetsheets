@@ -6,8 +6,14 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def initialize(entries, columns: [:comments, :hours, :spent_on], groups: BetterBudgetsheets::GROUPED_FIELDS)
     @entries = entries
-    @columns = columns.map(&:to_sym)
+
     @groups  = groups.map(&:to_sym)
+    @columns = columns.map(&:to_sym)
+
+    # clean up selcted and grouped fields
+    @groups.reject! {|g| !@columns.include?(g) }
+    @columns.reject! {|c| @groups.include?(c) }
+
     load_root_set
   end
 
