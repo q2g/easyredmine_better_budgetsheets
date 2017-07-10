@@ -1,11 +1,13 @@
 module BetterBudgetsheets
 
   CONFIG_FILE_PATH = "#{Rails.root}/config/better_budgetsheets.yml"
+  DEFAULT_GROUPED_FIELDS = [:project_id, :issue_id]
 
   GROUPED_FIELDS = if File.exists?(CONFIG_FILE_PATH)
-    YAML::load(File.open(CONFIG_FILE_PATH).read)['grouped_fields']
+    fields = YAML::load(File.open(CONFIG_FILE_PATH).read)['grouped_fields']
+    fields.any? ? fields : DEFAULT_GROUPED_FIELDS
   else
-    [:project_id]
+    DEFAULT_GROUPED_FIELDS
   end
 
 end

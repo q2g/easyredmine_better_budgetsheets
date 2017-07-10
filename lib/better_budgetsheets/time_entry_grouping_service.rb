@@ -15,11 +15,17 @@ class BetterBudgetsheets::TimeEntryGroupingService
     field_name = groups[0]
     grouped_entries = query_grouped_entries(@entries, field_name)
 
+    root_is_cf = groups[0].to_s.include?("cf_")
+
+    custom_field_entries = if root_is_cf
+      self.custom_field_query(grouped_entries[:entries], field_name)
+    end
+
     @root_sets = grouped_entries[:values].map do |id|
       EntrySet.new(
         self,
         grouped_field_label_name_for(field_name, id),
-        grouped_entries[:entries].where(grouped_entries[:field_name] => id),
+        (root_is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
         0
       )
     end
