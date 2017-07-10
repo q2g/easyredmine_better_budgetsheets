@@ -1,9 +1,14 @@
 <style type="text/css">
 tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
+tr.entry-group-rows.root-set td { border-top: solid 1px #000; }
+tr.entry-group-rows.with-subsets td { border-bottom: none; }
 tr.entry-group-rows td.first-col { width: 3%;}
+table tfoot td { border-top: solid 2px #000; }
 </style>
 
 <h1><%= @query_name %> <%= @time_range[:from] %> - <%= @time_range[:from] %></h1>
+<% @summed_up_values ||= {} %>
+
 <table class="factura-sheet">
   <thead>
     <tr>
@@ -19,4 +24,18 @@ tr.entry-group-rows td.first-col { width: 3%;}
       <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2"><%= I18n.t("better_budgetsheets.sum") %></td>
+      <% @time_entry_groups.columns.each do |col_name| %>
+
+          <td class="text-right">
+            <% if @summed_up_values[col_name] %>
+              <%= @summed_up_values[col_name].to_euro %>
+            <% end %>
+          </td>
+
+      <% end %>
+    </tr>
+  </tfoot>
 </table>

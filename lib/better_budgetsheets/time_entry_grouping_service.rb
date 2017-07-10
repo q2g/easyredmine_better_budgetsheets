@@ -4,7 +4,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   attr_accessor :groups, :root_sets
 
-  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: [:project_id, :cf_25, :cf_26, :cf_27])
+  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: BetterBudgetsheets::GROUPED_FIELDS)
     @entries = entries
     @columns = columns.map(&:to_sym)
     @groups  = groups.map(&:to_sym)
@@ -119,6 +119,10 @@ class BetterBudgetsheets::TimeEntryGroupingService
           )
       end
 
+    end
+
+    def root_set?
+      index == 0
     end
 
   end

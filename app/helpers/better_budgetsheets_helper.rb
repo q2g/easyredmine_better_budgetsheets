@@ -4,7 +4,6 @@ module BetterBudgetsheetsHelper
     value = nil
 
     @summed_up_values ||= {}
-    @summed_up_values[col] ||= 0
 
     # assignment, not comparing
     if cf = budget_sheet_cf_from_col_name(col)
@@ -26,6 +25,7 @@ module BetterBudgetsheetsHelper
     elsif value.is_a?(ActiveSupport::TimeWithZone)
       value.localtime.to_de
     elsif value.is_a?(Numeric)
+      @summed_up_values[col] ||= 0
       @summed_up_values[col] += value
       value
     else
