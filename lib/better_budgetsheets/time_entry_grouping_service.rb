@@ -4,7 +4,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   attr_accessor :groups, :root_sets
 
-  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: [:project_id, :cf_25, :user_id, :cf_26, :cf_27])
+  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: [:project_id, :cf_25, :cf_26, :cf_27])
     @entries = entries
     @columns = columns.map(&:to_sym)
     @groups  = groups.map(&:to_sym)
@@ -31,6 +31,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   # name for grouped columns
   def grouped_field_label_name_for(field_name, id)
+
     case field_name.to_sym
     when :project_id
       Project.find(id).name
@@ -41,30 +42,23 @@ class BetterBudgetsheets::TimeEntryGroupingService
     when :activity_id
       TimeEntryActivity.find(id).name
     else
-      if field_name.to_s.match("cf_")
-        cf_from_field_name(field_name).name
-      end
+      id.to_s
     end
   end
 
   def query_grouped_entries(entries, field_name)
+    data = {
+      entries: entries
+    }
     if field_name.to_s.match("cf_")
-      sql = custom_field_query(entries, field_name)
-      entries = TimeEntry.find_by_sql(sql)
-
-      {
-        entries: entries,
-        values: entries.group("custom_values.value").pluck("custom_values.value")
-        field_name: "custom_values.value"
-      }
+      data[:values] = custom_field_query(entries, field_name).group("custom_values.value").pluck("custom_values.value")
+      data[:field_name] = "custom_values.value"
     else
-      {
-        entries: entries,
-        values: entries.group(field_name).pluck(field_name),
-        field_name: field_name
-      }
-
+      data[:values] = entries.group(field_name).pluck(field_name)
+      data[:field_name] = field_name
     end
+
+    return data
   end
 
   def cf_from_field_name(cf_field_name)
@@ -73,14 +67,13 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def custom_field_query(entries, cf_field_name)
     cf = cf_from_field_name(cf_field_name)
-    cf_type = cf.type.gsub('CustomField', '')
-    cf_type_id = "#{cf_type.downcase}_id"
+    cf_type_id = "#{cf.type.gsub('CustomField', '').downcase}_id"
 
-    query =   ["SELECT *, custom_values.value, custom_values.custom_field_id FROM time_entries"]
-    query <<  ["LEFT JOIN custom_values ON time_entries.#{cf_type_id} = custom_values.customized_id WHERE custom_values.customized_type = '#{cf_type}'"]
-    query <<  ["AND custom_values.custom_field_id = #{cf.id}"]
-    query <<  ["AND time_entries.id IN (#{entries.pluck(:id).join(",")})"]
-    query.join(" ")
+    TimeEntry.select("*, custom_values.value, custom_values.custom_field_id")
+      .joins("LEFT JOIN custom_values ON time_entries.#{cf_type_id} = custom_values.customized_id")
+      .where("custom_values.custom_field_id = #{cf.id}")
+      .where("time_entries.id IN (#{entries.pluck(:id).join(",")})")
+
   end
 
   class EntrySet
@@ -94,17 +87,36 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
       next_group_column  = grouping_service.groups[index+1]
 
-      if next_group_column
-        grouped_entries = query_grouped_entries(@entries, next_group_column)
+      if next_group_column && @entries.any?
+        @is_cf = next_group_column.to_s.include?("cf_")
+
+        grouped_entries = grouping_service.query_grouped_entries(@entries, next_group_column)
+
+        custom_field_entries = if @is_cf
+          grouping_service.custom_field_query(grouped_entries[:entries], next_group_column)
+        end
 
         @sub_sets = grouped_entries[:values].map do |id|
           EntrySet.new(
             grouping_service,
             grouping_service.grouped_field_label_name_for(next_group_column, id),
-            grouped_entries[:entries].where(grouped_entries[:field_name] => id),
+
+            (@is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
             @index+1
           )
         end
+
+        # scanning for blank entries
+
+        @sub_sets << EntrySet.new(
+            grouping_service,
+            "-",
+            (
+              @is_cf ?
+                grouped_entries[:entries].where.not(id: custom_field_entries.pluck(:id)) :
+                  grouped_entries[:entries].where("#{grouped_entries[:field_name]} IS NULL OR #{grouped_entries[:field_name]} = ''")),
+            @index+1
+          )
       end
 
     end

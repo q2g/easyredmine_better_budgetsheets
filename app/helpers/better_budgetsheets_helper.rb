@@ -3,6 +3,9 @@ module BetterBudgetsheetsHelper
   def bugdet_sheet_display_value_for(time_entry, col)
     value = nil
 
+    @summed_up_values ||= {}
+    @summed_up_values[col] ||= 0
+
     # assignment, not comparing
     if cf = budget_sheet_cf_from_col_name(col)
 
@@ -23,10 +26,22 @@ module BetterBudgetsheetsHelper
     elsif value.is_a?(ActiveSupport::TimeWithZone)
       value.localtime.to_de
     elsif value.is_a?(Numeric)
-      value.to_euro
+      @summed_up_values[col] += value
+      value
     else
       value
     end
+  end
+
+  def bugdet_sheet_column_for(time_entry, col)
+    v = bugdet_sheet_display_value_for(time_entry, col)
+    css = ""
+    if v.is_a?(Numeric)
+      v = v.to_euro
+      css = "text-right"
+    end
+
+    content_tag :td, v, class: css
   end
 
   def budget_sheet_header_label(col)

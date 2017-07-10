@@ -2,6 +2,7 @@
   <td class="first-col"><%= budget_sheet_header_label(time_entry_groups.groups[set.index])  %></td>
   <td colspan="<%= time_entry_groups.columns.size+1 %>" width="20%"><%= set.field_name %></td>
 </tr>
+
 <% if set.sub_sets %>
   <% set.sub_sets.each do |subset| %>
     <%= render "better_budgetsheets_factura/rows_for_set", set: subset, time_entry_groups: time_entry_groups %>
@@ -11,7 +12,7 @@
     <tr>
       <td colspan="2"></td>
       <% time_entry_groups.columns.each do |col| %>
-        <td><%= bugdet_sheet_display_value_for(time_entry, col) %></td>
+        <%= bugdet_sheet_column_for(time_entry, col) %>
       <% end %>
     </tr>
   <% end %>
