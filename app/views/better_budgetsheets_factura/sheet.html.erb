@@ -12,8 +12,6 @@ table tfoot td { border-top: solid 2px #000; }
 <table class="factura-sheet">
   <thead>
     <tr>
-      <th class="first-col"></th>
-      <th></th>
       <% @time_entry_groups.columns.each do |col_name| %>
         <th><%= budget_sheet_header_label(col_name) %></th>
       <% end %>
@@ -26,7 +24,9 @@ table tfoot td { border-top: solid 2px #000; }
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="2"><%= I18n.t("better_budgetsheets.sum") %></td>
+      <td colspan="<%= @time_entry_groups.columns.size %>"><%= I18n.t("better_budgetsheets.sum") %></td>
+    </tr>
+    <tr>
       <% @time_entry_groups.columns.each do |col_name| %>
 
           <td class="text-right">

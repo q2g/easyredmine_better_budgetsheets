@@ -31,6 +31,7 @@ module BetterBudgetsheetsHelper
     else
       value
     end
+
   end
 
   def bugdet_sheet_column_for(time_entry, col)

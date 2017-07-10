@@ -19,26 +19,26 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def load_root_set
     field_name = groups[0]
-    grouped_entries = query_grouped_entries(@entries, field_name)
+    if field_name
+      grouped_entries = query_grouped_entries(@entries, field_name)
 
-    root_is_cf = groups[0].to_s.include?("cf_")
+      root_is_cf = groups[0].to_s.include?("cf_")
 
-    custom_field_entries = if root_is_cf
-      self.custom_field_query(grouped_entries[:entries], field_name)
+      custom_field_entries = if root_is_cf
+        self.custom_field_query(grouped_entries[:entries], field_name)
+      end
+
+      @root_sets = grouped_entries[:values].map do |id|
+        EntrySet.new(
+          self,
+          grouped_field_label_name_for(field_name, id),
+          (root_is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
+          0
+        )
+      end
+    else
+      @root_sets = []
     end
-
-    @root_sets = grouped_entries[:values].map do |id|
-      EntrySet.new(
-        self,
-        grouped_field_label_name_for(field_name, id),
-        (root_is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
-        0
-      )
-    end
-  end
-
-  def colspan_at_index(index)
-    (@columns.size + @groups.size) - index
   end
 
   # name for grouped columns
@@ -81,7 +81,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
     cf = cf_from_field_name(cf_field_name)
     cf_type_id = "#{cf.type.gsub('CustomField', '').downcase}_id"
 
-    TimeEntry.select("*, custom_values.value, custom_values.custom_field_id")
+    TimeEntry.select("time_entries.*, custom_values.value, custom_values.custom_field_id")
       .joins("LEFT JOIN custom_values ON time_entries.#{cf_type_id} = custom_values.customized_id")
       .where("custom_values.custom_field_id = #{cf.id}")
       .where("time_entries.id IN (#{entries.pluck(:id).join(",")})")
