@@ -6,8 +6,9 @@ module BetterBudgetsheets
     header_color:         '#fff',
     header_background:    '#0093de',
     highlight_color:      '#000',
-    highlight_background: '##b1e5ff',
+    highlight_background: '#b1e5ff',
     border_color:         '#000',
+    row_background:       '#efefef',
     logo_url:             'https://www.easyredmine.com/images/Easy_Redmine_Logo_min.svg'
   }
 

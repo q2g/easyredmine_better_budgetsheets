@@ -6,7 +6,7 @@ namespace :better_budgetsheets do
       File.open(BetterBudgetsheets::CONFIG_FILE_PATH, "w") do |f|
         f.puts YAML::dump({
           'grouped_fields' => BetterBudgetsheets::DEFAULT_GROUPED_FIELDS.map(&:to_s),
-          'styles'         => BetterBudgetsheets::DEFAULT_GROUPED_FIELDS.stringify_keys
+          'styles'         => BetterBudgetsheets::DEFAULT_STYLES.stringify_keys
         })
       end
     else

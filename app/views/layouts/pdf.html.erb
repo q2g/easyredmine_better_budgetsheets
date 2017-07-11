@@ -4,9 +4,23 @@
     <meta charset='utf-8' />
     <%#= wicked_pdf_stylesheet_link_tag "pdf" -%>
     <style type="text/css">
-      #content td, #content th { font-size: 12px; vertical-align: top; }
-      #content thead th { background: #123456; }
+
+      td, th { font-size: 12px; vertical-align: top; }
       table { cellspacing: 0; border-spacing: 0; border-collapse: collapse;}
+
+      thead th,
+      .sum-row td { background: <%= BetterBudgetsheets.styles[:header_background] %>; color: <%= BetterBudgetsheets.styles[:header_color] %>;}
+
+      .sum-last-row td { font-weight: bold;}
+
+      #content tr.entry-group-rows td { background: <%= BetterBudgetsheets.styles[:highlight_background] %>; color: <%= BetterBudgetsheets.styles[:highlight_color] %>;}
+
+      #content tr.entry-group-rows td,
+      #content tr.entry-group-rows.root-set td,
+      #content tr.root-set-seperator td,
+      #content table tfoot td  { border-color: <%= BetterBudgetsheets.styles[:border_color] %>;}
+      #content tr.even { background: <%= BetterBudgetsheets.styles[:row_background] %> }
+      #pdf-header { border: solid 1px red; text-align: right;}
     </style>
   </head>
   <body>

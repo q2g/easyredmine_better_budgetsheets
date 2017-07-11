@@ -13,31 +13,34 @@ table tfoot td { border-top: solid 2px #000; }
 </style>
 
 <h1><%= @query_name %></h1>
+
 <% @summed_up_values ||= {} %>
 
 <table class="factura-sheet">
-  <thead>
-    <tr>
-      <% @time_entry_groups.columns.each do |col_name| %>
-        <th><%= budget_sheet_header_label(col_name) %></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
+
+  <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
+    <thead>
+      <tr>
+        <% @time_entry_groups.columns.each do |col_name| %>
+          <th><%= budget_sheet_header_label(col_name) %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
       <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
       <% if i+1 != @time_entry_groups.root_sets.size %>
         <tr class="root-set-seperator">
           <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
         </tr>
       <% end %>
-    <% end %>
-  </tbody>
+    </tbody>
+  <% end %>
+
   <tfoot>
-    <tr>
+    <tr class="sum-row">
       <td colspan="<%= @time_entry_groups.columns.size %>"><%= I18n.t("better_budgetsheets.sum") %></td>
     </tr>
-    <tr>
+    <tr class="sum-last-row">
       <% @time_entry_groups.columns.each do |col_name| %>
 
           <td class="text-right">

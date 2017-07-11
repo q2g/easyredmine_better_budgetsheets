@@ -15,7 +15,8 @@ class BetterBudgetsheetsFacturaController < ApplicationController
             template: "/better_budgetsheets_factura/sheet",
             layout: "pdf",
             orientation: 'Landscape',
-            footer: { right: '[page] / [topage]', left: "#{@query_name} #{Time.now.to_date.to_de}" }
+            footer: { right: '[page] / [topage]', left: "#{@query_name} #{Time.now.to_date.to_de}" },
+            header: { html: { template: "/better_budgetsheets_factura/header" } }
   end
 
   private

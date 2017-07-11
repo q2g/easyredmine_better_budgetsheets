@@ -11,7 +11,7 @@
   <% end %>
 <% elsif set.entries.any? %>
   <% set.entries.each do |time_entry| %>
-    <tr>
+    <tr class="<%= cycle('odd', 'even') %>">
       <% time_entry_groups.columns.each do |col| %>
         <%= bugdet_sheet_column_for(time_entry, col) %>
       <% end %>
