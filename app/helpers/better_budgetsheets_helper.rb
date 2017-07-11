@@ -45,7 +45,7 @@ module BetterBudgetsheetsHelper
       css = "text-right"
     end
 
-    content_tag :td, v, class: css
+    content_tag :td, v.to_s.replace_entities, class: css
   end
 
   def budget_sheet_number_suffix(col)
@@ -59,7 +59,7 @@ module BetterBudgetsheetsHelper
   end
 
   def budget_sheet_header_label(col)
-    budget_sheet_cf_from_col_name(col).try(:name) || I18n.t(col, scope: 'better_budgetsheets.columns')
+    (budget_sheet_cf_from_col_name(col).try(:name) || I18n.t(col, scope: 'better_budgetsheets.columns')).replace_entities
   end
 
   def budget_sheet_cf_from_col_name(col)

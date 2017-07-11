@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <%#= wicked_pdf_stylesheet_link_tag "pdf" -%>
+    <style type="text/css">
+      #content td, #content th { font-size: 12px; vertical-align: top; }
+      #content thead th { background: #123456; }
+      table { cellspacing: 0; border-spacing: 0; border-collapse: collapse;}
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <%= yield %>
+    </div>
+  </body>
+</html>
