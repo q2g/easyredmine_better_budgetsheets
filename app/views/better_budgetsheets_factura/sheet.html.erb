@@ -1,6 +1,12 @@
 <style type="text/css">
+.factura-sheet { font-size: 16px;}
+.factura-sheet td,
+.factura-sheet th { padding: 4px;}
 tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
-tr.entry-group-rows.root-set td { border-top: solid 1px #000; }
+tr.entry-group-rows.root-set td,
+tr.root-set-seperator td { border-top: solid 1px #000; }
+tr.root-set-seperator td { height: 40px; background: #fff;}
+
 tr.entry-group-rows.with-subsets td { border-bottom: none; }
 tr.entry-group-rows td.first-col { width: 3%;}
 table tfoot td { border-top: solid 2px #000; }
@@ -18,8 +24,13 @@ table tfoot td { border-top: solid 2px #000; }
     </tr>
   </thead>
   <tbody>
-    <% @time_entry_groups.root_sets.each do |set| %>
+    <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
       <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
+      <% if i+1 != @time_entry_groups.root_sets.size %>
+        <tr class="root-set-seperator">
+          <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
   <tfoot>
@@ -31,7 +42,8 @@ table tfoot td { border-top: solid 2px #000; }
 
           <td class="text-right">
             <% if @summed_up_values[col_name] %>
-              <%= @summed_up_values[col_name].to_euro %>
+
+              <%= @summed_up_values[col_name].to_euro(budget_sheet_number_suffix(col_name)) %>
             <% end %>
           </td>
 

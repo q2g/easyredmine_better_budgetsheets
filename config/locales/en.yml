@@ -12,4 +12,6 @@ en:
       spent_on: Spent on
       user: User
       comments: Comments
+      easy_money_rate_type_external: External rate
+      easy_money_rate_type_internal: Internal rate
     sum: Total

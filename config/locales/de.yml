@@ -13,4 +13,6 @@ de:
       spent_on: Gebucht am
       user_id: Mitarbeiter
       comments: Kommentar
+      easy_money_rate_type_external: Externer Satz
+      easy_money_rate_type_internal: Interner Satz
     sum: Summe

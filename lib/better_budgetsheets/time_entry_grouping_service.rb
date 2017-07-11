@@ -79,7 +79,12 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def custom_field_query(entries, cf_field_name)
     cf = cf_from_field_name(cf_field_name)
-    cf_type_id = "#{cf.type.gsub('CustomField', '').downcase}_id"
+
+    if cf.type == 'TimeEntryCustomField'
+      cf_type_id = 'id'
+    else
+      cf_type_id = "#{cf.type.gsub('CustomField', '').downcase}_id"
+    end
 
     TimeEntry.select("time_entries.*, custom_values.value, custom_values.custom_field_id")
       .joins("LEFT JOIN custom_values ON time_entries.#{cf_type_id} = custom_values.customized_id")

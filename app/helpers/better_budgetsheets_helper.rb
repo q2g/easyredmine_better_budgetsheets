@@ -28,6 +28,8 @@ module BetterBudgetsheetsHelper
       @summed_up_values[col] ||= 0
       @summed_up_values[col] += value
       value
+    elsif (Date.parse(value) rescue nil).is_a?(Date)
+      Date.parse(value).to_de
     else
       value
     end
@@ -38,11 +40,22 @@ module BetterBudgetsheetsHelper
     v = bugdet_sheet_display_value_for(time_entry, col)
     css = ""
     if v.is_a?(Numeric)
-      v = v.to_euro
+
+      v = v.to_euro(budget_sheet_number_suffix(col))
       css = "text-right"
     end
 
     content_tag :td, v, class: css
+  end
+
+  def budget_sheet_number_suffix(col)
+    if col.match(/rate|money/)
+      'EUR'
+    elsif col.match(/hour/)
+      "h"
+    else
+      nil
+    end
   end
 
   def budget_sheet_header_label(col)
