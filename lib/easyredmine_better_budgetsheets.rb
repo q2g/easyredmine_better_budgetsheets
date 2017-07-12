@@ -1,7 +1,7 @@
 module BetterBudgetsheets
 
   CONFIG_FILE_PATH = "#{Rails.root}/config/better_budgetsheets.yml"
-  DEFAULT_GROUPED_FIELDS = [:project_id, :issue_id]
+
   DEFAULT_STYLES         = {
     header_color:         '#fff',
     header_background:    '#0093de',
@@ -19,15 +19,6 @@ module BetterBudgetsheets
       {}
     end
   end
-
-  def self.grouped_fields
-    if self.config['grouped_fields'] && self.config['grouped_fields'].any?
-      self.config['grouped_fields']
-    else
-      DEFAULT_GROUPED_FIELDS
-    end
-  end
-
 
   def self.styles
     if self.config['style']

@@ -4,10 +4,17 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   attr_accessor :groups, :root_sets
 
-  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: BetterBudgetsheets.grouped_fields)
+  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: )
     @entries = entries
 
-    @groups  = groups.map(&:to_sym)
+    @groups  = groups.map do |g|
+      if g.include?("cf_")
+        g.to_sym
+      else
+        "#{g}_id".to_sym
+      end
+    end
+
     @columns = columns.map(&:to_sym)
 
     # clean up selcted and grouped fields

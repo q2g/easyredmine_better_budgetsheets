@@ -17,8 +17,13 @@ module BetterBudgetsheets
         additional_params[:columns] = parsed_query_params["[column_names][]"]
       end
 
+      if parsed_query_params['group_by[]']
+        additional_params[:groups] = parsed_query_params['group_by[]']
+      elsif query
+        additional_params[:groups] = query.group_by
+      end
 
-      if additional_params[:columns]
+      if additional_params[:columns] && additional_params[:groups]
 
         [content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_preview_factura),
             better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),

@@ -10,6 +10,7 @@ tr.root-set-seperator td { height: 40px; background: #fff;}
 tr.entry-group-rows.with-subsets td { border-bottom: none; }
 tr.entry-group-rows td.first-col { width: 3%;}
 table tfoot td { border-top: solid 2px #000; }
+tr.even td {background: #efefef;}
 </style>
 
 <h1><%= @query_name %></h1>
@@ -37,18 +38,21 @@ table tfoot td { border-top: solid 2px #000; }
   <% end %>
 
   <tfoot>
-    <tr class="sum-row">
-      <td colspan="<%= @time_entry_groups.columns.size %>"><%= I18n.t("better_budgetsheets.sum") %></td>
-    </tr>
     <tr class="sum-last-row">
-      <% @time_entry_groups.columns.each do |col_name| %>
+      <% @time_entry_groups.columns.each_with_index do |col_name,i| %>
 
-          <td class="text-right">
-            <% if @summed_up_values[col_name] %>
+          <% if i == 0 && @summed_up_values[col_name].blank? %>
+            <td>
+              <%= I18n.t("better_budgetsheets.sum") %>
+            </td>
+          <% else %>
+            <td class="text-right">
+              <% if @summed_up_values[col_name] %>
 
-              <%= @summed_up_values[col_name].to_euro(budget_sheet_number_suffix(col_name)) %>
-            <% end %>
-          </td>
+                <%= @summed_up_values[col_name].to_euro(budget_sheet_number_suffix(col_name)) %>
+              <% end %>
+            </td>
+          <% end %>
 
       <% end %>
     </tr>

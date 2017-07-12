@@ -1,5 +1,6 @@
 en:
   button_better_budgetsheet_create_factura: "Faktura erstellen"
+  button_better_budgetsheet_preview_factura: "Vorschau Faktura erstellen"
   better_budgetsheets:
     columns:
       activity: Actitity
