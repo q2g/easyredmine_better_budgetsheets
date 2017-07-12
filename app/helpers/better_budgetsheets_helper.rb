@@ -16,6 +16,11 @@ module BetterBudgetsheetsHelper
       when 'TimeEntryCustomField'
         value = time_entry.custom_field_value(cf.id)
       end
+      case cf.field_format
+      when 'user'
+        value = User.find_by(id: value)
+      end
+
     else
       value = time_entry.send(col)
     end
@@ -25,8 +30,12 @@ module BetterBudgetsheetsHelper
     elsif value.is_a?(ActiveSupport::TimeWithZone)
       value.localtime.to_de
     elsif value.is_a?(Numeric)
-      @summed_up_values[col] ||= 0
-      @summed_up_values[col] += value
+      @summed_up_values[col] ||= {}
+      suffix = budget_sheet_number_suffix(col, time_entry)
+      @summed_up_values[col][suffix] ||= 0
+      # grouping for different units
+
+      @summed_up_values[col][suffix] += value
       value
     elsif (Date.parse(value) rescue nil).is_a?(Date)
       Date.parse(value).to_de
@@ -41,21 +50,29 @@ module BetterBudgetsheetsHelper
     css = ""
     if v.is_a?(Numeric)
 
-      v = v.to_euro(budget_sheet_number_suffix(col))
+      v = v.to_euro(budget_sheet_number_suffix(col, time_entry))
       css = "text-right"
     end
 
     content_tag :td, v.to_s.replace_entities, class: css
   end
 
-  def budget_sheet_number_suffix(col)
-    if col.match(/rate|money/)
-      'EUR'
+  def budget_sheet_number_suffix(col, time_entry)
+    if is_money_value?(col)
+      if time_entry.project.easy_currency
+        time_entry.project.easy_currency.symbol.presence || time_entry.project.easy_currency.iso_code.presence
+      else
+        ""
+      end
     elsif col.match(/hour/)
       "h"
     else
-      nil
+      ""
     end
+  end
+
+  def is_money_value?(col)
+    col.match(/rate|money/)
   end
 
   def budget_sheet_header_label(col)

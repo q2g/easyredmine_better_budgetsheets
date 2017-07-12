@@ -1,6 +1,6 @@
 class BetterBudgetsheets::TimeEntryGroupingService
 
-  attr_reader :entries, :columns, :groups
+  attr_reader :entries, :columns, :groups, :project_names
 
   attr_accessor :groups, :root_sets
 
@@ -20,6 +20,17 @@ class BetterBudgetsheets::TimeEntryGroupingService
     # clean up selcted and grouped fields
     @groups.reject! {|g| !@columns.include?(g) }
     @columns.reject! {|c| @groups.include?(c) }
+
+    @project_names = Project.where(id: @entries.pluck(:project_id)).map do |project|
+      #checking if easy_invoicing_client_id is set
+      client_id = EasySetting.find_by(name: 'easy_invoicing_client_id', project_id: project.id).try(:value)
+      if client_id
+        c = EasyContact.find(client_id)
+        [c.firstname.presence, c.lastname.presence].compact.join(" ")
+      else
+        project.name
+      end
+    end
 
     load_root_set
   end

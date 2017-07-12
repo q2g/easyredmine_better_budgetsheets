@@ -1,7 +1,8 @@
 <style type="text/css">
 .factura-sheet { font-size: 16px;}
 .factura-sheet td,
-.factura-sheet th { padding: 4px;}
+.factura-sheet th { padding: 4px; text-align: left;}
+.factura-sheet th { border-bottom: solid 1px #000; }
 tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
 tr.entry-group-rows.root-set td,
 tr.root-set-seperator td { border-top: solid 1px #000; }
@@ -11,6 +12,7 @@ tr.entry-group-rows.with-subsets td { border-bottom: none; }
 tr.entry-group-rows td.first-col { width: 3%;}
 table tfoot td { border-top: solid 2px #000; }
 tr.even td {background: #efefef;}
+td.text-right { text-align: right;}
 </style>
 
 <h1><%= @query_name %></h1>
@@ -20,21 +22,15 @@ tr.even td {background: #efefef;}
 <table class="factura-sheet">
 
   <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
-    <thead>
-      <tr>
-        <% @time_entry_groups.columns.each do |col_name| %>
-          <th><%= budget_sheet_header_label(col_name) %></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
+
+
       <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
       <% if i+1 != @time_entry_groups.root_sets.size %>
         <tr class="root-set-seperator">
           <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
         </tr>
       <% end %>
-    </tbody>
+
   <% end %>
 
   <tfoot>
@@ -47,9 +43,10 @@ tr.even td {background: #efefef;}
             </td>
           <% else %>
             <td class="text-right">
-              <% if @summed_up_values[col_name] %>
-
-                <%= @summed_up_values[col_name].to_euro(budget_sheet_number_suffix(col_name)) %>
+              <% if @summed_up_values[col_name] && @summed_up_values[col_name].keys.any? %>
+                <% @summed_up_values[col_name].each do |key, value |%>
+                  <%= value.to_euro(key) %><br />
+                <% end %>
               <% end %>
             </td>
           <% end %>

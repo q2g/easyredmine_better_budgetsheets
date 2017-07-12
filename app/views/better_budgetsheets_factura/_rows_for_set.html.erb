@@ -10,6 +10,13 @@
     <%= render "better_budgetsheets_factura/rows_for_set", set: subset, time_entry_groups: time_entry_groups %>
   <% end %>
 <% elsif set.entries.any? %>
+
+    <tr>
+      <% @time_entry_groups.columns.each do |col_name| %>
+        <th><%= budget_sheet_header_label(col_name) %></th>
+      <% end %>
+    </tr>
+
   <% set.entries.each do |time_entry| %>
     <tr class="<%= cycle('odd', 'even') %>">
       <% time_entry_groups.columns.each do |col| %>

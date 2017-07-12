@@ -11,12 +11,16 @@ class BetterBudgetsheetsFacturaController < ApplicationController
 
   def print
     load_data
-    render  pdf: "#{Time.now.to_date} - #{@query_name}",
+    header_file     = File.expand_path("../../../public/header.html", __FILE__)
+    header_content  = (File.open(header_file).read rescue nil)
+
+    render  pdf: "#{Time.now.to_date} - #{@query_name} - #{@time_entry_groups.project_names.join(' - ')}".gsub(/\\\/\:\*\?\"\<\>\|/, '_'),
             template: "/better_budgetsheets_factura/sheet",
             layout: "pdf",
             orientation: 'Landscape',
-            footer: { right: '[page] / [topage]', left: "#{@query_name} #{Time.now.to_date.to_de}" },
-            header: { html: { template: "/better_budgetsheets_factura/header" } }
+            footer: { right: '[page] / [topage]',  left: "#{@query_name} #{Time.now.to_date.to_de}" },
+            header: { content: header_content  },
+            margin:  {   top: 20, bottom: 20 }
   end
 
   private
