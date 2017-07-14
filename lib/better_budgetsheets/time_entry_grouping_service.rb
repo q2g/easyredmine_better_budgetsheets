@@ -7,7 +7,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
   def initialize(entries, columns: [:comments, :hours, :spent_on], groups: )
     @entries = entries
 
-    @groups  = groups.map do |g|
+    @groups  = Array.wrap(groups).map do |g|
       if g.include?("cf_")
         g.to_sym
       else
