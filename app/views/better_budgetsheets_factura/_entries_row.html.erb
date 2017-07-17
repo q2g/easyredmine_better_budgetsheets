@@ -1,0 +1,13 @@
+<tr>
+  <% time_entry_groups.columns.each do |col_name| %>
+    <th><%= budget_sheet_header_label(col_name) %></th>
+  <% end %>
+</tr>
+
+<% entries.each do |time_entry| %>
+  <tr class="<%= cycle('odd', 'even') %>">
+    <% time_entry_groups.columns.each do |col| %>
+      <%= bugdet_sheet_column_for(time_entry, col) %>
+    <% end %>
+  </tr>
+<% end %>

@@ -52,7 +52,11 @@ module BetterBudgetsheetsHelper
     css = ""
     if v.is_a?(Numeric)
 
-      v = v.to_euro(budget_sheet_number_suffix(col, time_entry))
+      if budget_sheet_cf_from_col_name(col).try(:field_format) == 'int'
+        v = v.to_de
+      else  
+        v = v.to_euro(budget_sheet_number_suffix(col, time_entry))
+      end  
       css = "text-right"
     end
 

@@ -59,6 +59,10 @@ class BetterBudgetsheets::TimeEntryGroupingService
       @root_sets = []
     end
   end
+  
+  def set_locked_and_billed!(user)
+    @entries.update_all(easy_billed: true, easy_locked: true, easy_locked_by_id: user.id, easy_locked_at: Time.now)
+  end
 
   # name for grouped columns
   def grouped_field_label_name_for(field_name, id)

@@ -22,14 +22,18 @@ td.root-header-container table { border: none;}
 <% @summed_up_values ||= {} %>
 
 <table class="factura-sheet">
-  <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
-      <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
-      <% if i+1 != @time_entry_groups.root_sets.size %>
-        <tr class="root-set-seperator">
-          <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
-        </tr>
-      <% end %>
-
+  <% if @time_entry_groups.root_sets.any? %>
+    <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
+        <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
+        <% if i+1 != @time_entry_groups.root_sets.size %>
+          <tr class="root-set-seperator">
+            <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
+          </tr>
+        <% end %>
+    <% end %>
+  
+  <% else %>
+    <%= render "better_budgetsheets_factura/entries_row", entries: @time_entry_groups.entries, time_entry_groups: @time_entry_groups %>  
   <% end %>
 
   <tfoot>
@@ -44,7 +48,7 @@ td.root-header-container table { border: none;}
             <td class="text-right">
               <% if @summed_up_values[col_name] && @summed_up_values[col_name].keys.any? %>
                 <% @summed_up_values[col_name].each do |key, value |%>
-                  <%= value.to_euro(key) %><br />
+                  <%= value.is_a?(Integer) ? value.to_de : value.to_euro(key) %><br />
                 <% end %>
               <% end %>
             </td>
