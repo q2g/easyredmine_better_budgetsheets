@@ -1,11 +1,21 @@
 # BetterButgetsheets for EasyRedmine
 
+Allows to generate optimized Budgetsheets in EasyRedmine based on the Query/Filter functions provided by ER.
 
-## Install
+Optimizations include:
 
+- Grouping
+- Formatting of Numeric values
+- Custom namings for columns
+- Automatic locking of time entries after printing pdf
 
-## TODO
+**Comning soon**
+- Custom Header and Footer for PDF file
 
+## Using custom field labels
+
+The `I18n` scope for the custom field labels is `better_budgetsheets.columns`. 
+It is possible the label custom fields by adding keys like `cf_1` (to label `CustomField` with `id=1`)
 
 
 ## Info
