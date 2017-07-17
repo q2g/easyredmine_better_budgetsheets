@@ -18,7 +18,6 @@ class BetterBudgetsheets::TimeEntryGroupingService
     @columns = columns.map(&:to_sym)
 
     # clean up selcted and grouped fields
-    @groups.reject! {|g| !@columns.include?(g) }
     @columns.reject! {|c| @groups.include?(c) }
     
     @project_names = Project.where(id: @entries.pluck(:project_id)).map do |project|
