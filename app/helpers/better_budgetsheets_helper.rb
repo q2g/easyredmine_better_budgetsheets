@@ -82,7 +82,11 @@ module BetterBudgetsheetsHelper
   end
 
   def budget_sheet_header_label(col)
-    (budget_sheet_cf_from_col_name(col).try(:name) || I18n.t(col, scope: 'better_budgetsheets.columns')).replace_entities
+    # first, checking if column in yaml file is present
+    I18n.t(col, 
+      scope: 'better_budgetsheets.columns',
+      default: (budget_sheet_cf_from_col_name(col).try(:name) || I18n.t("field_name_#{col}"))
+    ).replace_entities  
   end
 
   def budget_sheet_cf_from_col_name(col)
