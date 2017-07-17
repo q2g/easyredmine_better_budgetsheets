@@ -9,7 +9,7 @@ module BetterBudgetsheetsHelper
     if cf = budget_sheet_cf_from_col_name(col)
 
       case cf.type
-      when 'IssueCustomField'
+      when 'IssueCustomField' 
         value =time_entry.issue.custom_field_value(cf.id)
       when 'ProjectCustomField'
         value = time_entry.project.custom_field_value(cf.id)
@@ -19,12 +19,14 @@ module BetterBudgetsheetsHelper
       case cf.field_format
       when 'user'
         value = User.find_by(id: value)
+      when 'int'
+        value = value.to_i
       end
 
     else
       value = time_entry.send(col)
     end
-
+    
     if value.is_a?(Date) || value.is_a?(DateTime)
       value.to_de
     elsif value.is_a?(ActiveSupport::TimeWithZone)

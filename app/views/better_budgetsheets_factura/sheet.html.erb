@@ -9,10 +9,12 @@ tr.root-set-seperator td { border-top: solid 1px #000; }
 tr.root-set-seperator td { height: 40px; background: #fff;}
 
 tr.entry-group-rows.with-subsets td { border-bottom: none; }
-tr.entry-group-rows td.first-col { width: 3%;}
+tr.entry-group-rows td.first-col { width: 300px;}
 table tfoot td { border-top: solid 2px #000; }
 tr.even td {background: #efefef;}
 td.text-right { text-align: right;}
+td.root-header-container { padding: 0;}
+td.root-header-container table { border: none;}
 </style>
 
 <h1><%= @query_name %></h1>
@@ -20,10 +22,7 @@ td.text-right { text-align: right;}
 <% @summed_up_values ||= {} %>
 
 <table class="factura-sheet">
-
   <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
-
-
       <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
       <% if i+1 != @time_entry_groups.root_sets.size %>
         <tr class="root-set-seperator">

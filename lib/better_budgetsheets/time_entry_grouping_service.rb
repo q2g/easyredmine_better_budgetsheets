@@ -14,13 +14,13 @@ class BetterBudgetsheets::TimeEntryGroupingService
         "#{g}_id".to_sym
       end
     end
-
+    
     @columns = columns.map(&:to_sym)
 
     # clean up selcted and grouped fields
     @groups.reject! {|g| !@columns.include?(g) }
     @columns.reject! {|c| @groups.include?(c) }
-
+    
     @project_names = Project.where(id: @entries.pluck(:project_id)).map do |project|
       #checking if easy_invoicing_client_id is set
       client_id = EasySetting.find_by(name: 'easy_invoicing_client_id', project_id: project.id).try(:value)
@@ -36,11 +36,12 @@ class BetterBudgetsheets::TimeEntryGroupingService
   end
 
   def load_root_set
-    field_name = groups[0]
+    field_name = @groups[0]
+
     if field_name
       grouped_entries = query_grouped_entries(@entries, field_name)
 
-      root_is_cf = groups[0].to_s.include?("cf_")
+      root_is_cf = field_name.to_s.include?("cf_")
 
       custom_field_entries = if root_is_cf
         self.custom_field_query(grouped_entries[:entries], field_name)

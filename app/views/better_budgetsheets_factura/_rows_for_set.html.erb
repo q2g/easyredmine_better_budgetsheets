@@ -1,7 +1,13 @@
 <% if set.sub_sets || set.entries.any? %>
   <tr class="entry-group-rows <%= 'with-subsets' if set.sub_sets %> <%= 'root-set' if set.root_set? %>">
-    <td class="first-col"><%= budget_sheet_header_label(time_entry_groups.groups[set.index])  %></td>
-    <td colspan="<%= time_entry_groups.columns.size+1 %>" width="20%"><%= set.field_name.replace_entities %></td>
+    <td colspan="<%= time_entry_groups.columns.size+2 %>" class="root-header-container">
+      <table>
+        <tr>
+          <td class="first-col"><%= budget_sheet_header_label(time_entry_groups.groups[set.index])  %>:</td>
+          <td ><%= set.field_name.replace_entities %></td>
+        </tr>
+      </table>
+    </td>  
   </tr>
 <% end %>
 
