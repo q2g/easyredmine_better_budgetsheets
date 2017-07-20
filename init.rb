@@ -12,4 +12,6 @@ require 'easyredmine_better_budgetsheets'
 Rails.application.config.after_initialize do
   view_path = File.expand_path("../app/views", __FILE__)
   ActionController::Base.prepend_view_path(view_path)
+  locale_path = File.expand_path("../config/locales/custom.*.yml", __FILE__)
+  I18n.backend.load_translations
 end

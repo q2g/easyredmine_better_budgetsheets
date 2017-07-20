@@ -1,16 +1,16 @@
 de:
-  better_budgetsheets:
-    columns:
-      activity: Aktivität
-      issue: Ticket
-      issue_id: Ticket
-      hours: Stunden
-      created_on: Erstellt
-      project: Projekt
-      project_id: Projekt
-      spent_on: Gebucht am
-      user_id: Mitarbeiter
-      comments: Kommentar
-      easy_money_rate_type_external: Externer Satz
-      easy_money_rate_type_internal: Interner Satz
-    sum: Summe
+  better_budgetsheets_columns:
+    activity: Aktivität
+    issue: Ticket
+    issue_id: Ticket
+    hours: Stunden
+    created_on: Erstellt
+    project: Projekt
+    project_id: Projekt
+    spent_on: Gebucht am
+    user_id: Mitarbeiter
+    comments: Kommentar
+    easy_money_rate_type_external: Externer Satz
+    easy_money_rate_type_internal: Interner Satz
+  
+

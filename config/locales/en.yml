@@ -1,18 +1,4 @@
 en:
   button_better_budgetsheet_create_factura: "Faktura erstellen"
   button_better_budgetsheet_preview_factura: "Vorschau Faktura erstellen"
-  better_budgetsheets:
-    columns:
-      activity: Actitity
-      issue: Issue
-      issue_id: Issue
-      hours: Hours
-      created_on: Created at
-      project: Project
-      project_id: Project
-      spent_on: Spent on
-      user: User
-      comments: Comments
-      easy_money_rate_type_external: External rate
-      easy_money_rate_type_internal: Internal rate
-    sum: Total
+  better_budgetsheets_sum: Total
