@@ -14,12 +14,12 @@ class BetterBudgetsheets::TimeEntryGroupingService
         "#{g}_id".to_sym
       end
     end
-    
+
     @columns = columns.map(&:to_sym)
 
     # clean up selcted and grouped fields
     @columns.reject! {|c| @groups.include?(c) }
-    
+
     @project_names = Project.where(id: @entries.pluck(:project_id)).map do |project|
       #checking if easy_invoicing_client_id is set
       client_id = EasySetting.find_by(name: 'easy_invoicing_client_id', project_id: project.id).try(:value)
@@ -40,17 +40,16 @@ class BetterBudgetsheets::TimeEntryGroupingService
     if field_name
       grouped_entries = query_grouped_entries(@entries, field_name)
 
-      root_is_cf = field_name.to_s.include?("cf_")
-
-      custom_field_entries = if root_is_cf
+      custom_field_entries = if field_name.to_s.include?("cf_")
         self.custom_field_query(grouped_entries[:entries], field_name)
       end
+
 
       @root_sets = grouped_entries[:values].map do |id|
         EntrySet.new(
           self,
           grouped_field_label_name_for(field_name, id),
-          (root_is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
+          filtererd_entries_based_on_field_and_id(grouped_entries[:entries], custom_field_entries, grouped_entries[:field_name], id),
           0
         )
       end
@@ -58,9 +57,19 @@ class BetterBudgetsheets::TimeEntryGroupingService
       @root_sets = []
     end
   end
-  
+
   def set_locked_and_billed!(user)
     @entries.update_all(easy_billed: true, easy_locked: true, easy_locked_by_id: user.id, easy_locked_at: Time.now)
+  end
+
+  def filtererd_entries_based_on_field_and_id(grouped_entries,custom_field_entries = nil, field_name, id)
+    if custom_field_entries.present? && id.blank?
+      grouped_entries
+    elsif custom_field_entries.present?
+      custom_field_entries.where(field_name => id)
+    else
+      grouped_entries.where(field_name => id)
+    end
   end
 
   # name for grouped columns
@@ -139,8 +148,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
           EntrySet.new(
             grouping_service,
             grouping_service.grouped_field_label_name_for(next_group_column, id),
-
-            (@is_cf ? custom_field_entries : grouped_entries[:entries]).where(grouped_entries[:field_name] => id),
+            grouping_service.filtererd_entries_based_on_field_and_id(grouped_entries[:entries], custom_field_entries, grouped_entries[:field_name], id),
             @index+1
           )
         end
