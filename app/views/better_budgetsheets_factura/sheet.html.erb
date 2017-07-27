@@ -36,7 +36,7 @@ td.root-header-container table { border: none;}
     <%= render "better_budgetsheets_factura/entries_row", entries: @time_entry_groups.entries, time_entry_groups: @time_entry_groups %>  
   <% end %>
 
-  <tfoot>
+
     <tr class="sum-last-row">
       <% @time_entry_groups.columns.each_with_index do |col_name,i| %>
 
@@ -56,5 +56,5 @@ td.root-header-container table { border: none;}
 
       <% end %>
     </tr>
-  </tfoot>
+
 </table>
