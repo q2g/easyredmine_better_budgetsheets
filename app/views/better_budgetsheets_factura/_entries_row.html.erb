@@ -4,10 +4,15 @@
   <% end %>
 </tr>
 
-<% entries.each do |time_entry| %>
+<% entries.each_with_index do |time_entry,i| %>
   <tr class="<%= cycle('odd', 'even') %>">
     <% time_entry_groups.columns.each do |col| %>
       <%= bugdet_sheet_column_for(time_entry, col) %>
     <% end %>
   </tr>
+  <% if i == entries.size-1 %>
+    <tr class="root-set-seperator">
+      <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
+    </tr>
+  <% end %>
 <% end %>

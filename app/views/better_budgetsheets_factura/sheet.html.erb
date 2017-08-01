@@ -3,6 +3,7 @@
 .factura-sheet td,
 .factura-sheet th { padding: 4px; text-align: left;}
 .factura-sheet th { border-bottom: solid 1px #000; }
+tr { page-break-inside: avoid;}
 tr.entry-group-rows td { background: #fff; font-weight: bold; border-bottom: solid 1px #000;}
 tr.entry-group-rows.root-set td,
 tr.root-set-seperator td { border-top: solid 1px #000; }
@@ -10,11 +11,19 @@ tr.root-set-seperator td { height: 40px; background: #fff;}
 
 tr.entry-group-rows.with-subsets td { border-bottom: none; }
 tr.entry-group-rows td.first-col { width: 300px;}
-table tfoot td { border-top: solid 2px #000; }
+table tr.footer td { border-top: solid 2px #000; }
 tr.even td {background: #efefef;}
 td.text-right { text-align: right;}
 td.root-header-container { padding: 0;}
 td.root-header-container table { border: none;}
+
+thead { display: table-header-group; }
+tfoot { display: table-row-group; }
+tr { page-break-inside: avoid; }
+tr.root-set-seperator { page-break-inside: auto; }
+
+tr.entry-group-rows td.root-header-container table td { border-top: none; border-bottom: none;}
+
 </style>
 
 <h1><%= @query_name %></h1>
@@ -25,11 +34,7 @@ td.root-header-container table { border: none;}
   <% if @time_entry_groups.root_sets.any? %>
     <% @time_entry_groups.root_sets.each_with_index do |set, i| %>
         <%= render "better_budgetsheets_factura/rows_for_set", set: set, time_entry_groups: @time_entry_groups %>
-        <% if i+1 != @time_entry_groups.root_sets.size %>
-          <tr class="root-set-seperator">
-            <td colspan="<%= @time_entry_groups.columns.size %>">&nbsp;</td>
-          </tr>
-        <% end %>
+        
     <% end %>
   
   <% else %>
@@ -37,7 +42,7 @@ td.root-header-container table { border: none;}
   <% end %>
 
 
-    <tr class="sum-last-row">
+    <tr class="sum-last-row footer">
       <% @time_entry_groups.columns.each_with_index do |col_name,i| %>
 
           <% if i == 0 && @summed_up_values[col_name].blank? %>
