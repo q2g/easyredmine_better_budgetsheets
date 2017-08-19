@@ -21,6 +21,10 @@ module BetterBudgetsheetsHelper
         value = User.find_by(id: value)
       when 'int'
         value = value.to_i
+      when 'date'
+        value =  Date.parse(value)
+      when 'datetime'    
+        value =  DateTime.parse(value)
       end
 
     else
@@ -39,8 +43,6 @@ module BetterBudgetsheetsHelper
 
       @summed_up_values[col][suffix] += value
       value
-    elsif (Date.parse(value) rescue nil).is_a?(Date)
-      Date.parse(value).to_de
     else
       value
     end
