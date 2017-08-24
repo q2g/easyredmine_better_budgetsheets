@@ -29,15 +29,15 @@ class BetterBudgetsheetsFacturaController < ApplicationController
   def load_data
     @time_entries = TimeEntry.where(id: params[:time_entry_ids])
     @column_names = params[:columns]
-    @group_names   = params[:groups]
+    @group_names  = params[:groups]
     @query_name   = params[:query_name] || "Budgetsheet"
-
+    @sort         = params[:sort]
     @time_range = {
       from: @time_entries.pluck(:spent_on).min.strftime("%d.%m.%Y"),
       to: @time_entries.pluck(:spent_on).max.strftime("%d.%m.%Y")
     }
 
-    @time_entry_groups = BetterBudgetsheets::TimeEntryGroupingService.new(@time_entries, columns: @column_names, groups: @group_names)
+    @time_entry_groups = BetterBudgetsheets::TimeEntryGroupingService.new(@time_entries, columns: @column_names, groups: @group_names, sort: @sort)
     @time_entry_groups.load_root_set
   end
   

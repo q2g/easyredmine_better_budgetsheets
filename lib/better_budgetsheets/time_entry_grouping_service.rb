@@ -1,12 +1,14 @@
 class BetterBudgetsheets::TimeEntryGroupingService
 
-  attr_reader :entries, :columns, :groups, :project_names
+  attr_reader :entries, :columns, :groups, :project_names, :sort
 
   attr_accessor :groups, :root_sets
 
-  def initialize(entries, columns: [:comments, :hours, :spent_on], groups: )
+  def initialize(entries, columns: [:comments, :hours, :spent_on], groups:, sort: )
     @entries = entries
-
+    
+    @sort = JSON.parse(sort) if sort.present?
+    
     @groups  = Array.wrap(groups).map do |g|
       if g.include?("cf_")
         g.to_sym
@@ -44,7 +46,6 @@ class BetterBudgetsheets::TimeEntryGroupingService
         self.custom_field_query(grouped_entries[:entries], field_name)
       end
 
-
       @root_sets = grouped_entries[:values].map do |id|
         EntrySet.new(
           self,
@@ -70,6 +71,8 @@ class BetterBudgetsheets::TimeEntryGroupingService
     else
       grouped_entries.where(field_name => id)
     end
+    
+    return grouped_entries
   end
 
   # name for grouped columns

@@ -3,8 +3,7 @@
     <th><%= budget_sheet_header_label(col_name) %></th>
   <% end %>
 </tr>
-
-<% entries.each_with_index do |time_entry,i| %>
+<% sorted_entries(entries, time_entry_groups.sort).each_with_index do |time_entry,i| %>
   <tr class="<%= cycle('odd', 'even') %>">
     <% time_entry_groups.columns.each do |col| %>
       <%= bugdet_sheet_column_for(time_entry, col) %>
