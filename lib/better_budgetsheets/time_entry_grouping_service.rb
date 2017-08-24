@@ -65,14 +65,12 @@ class BetterBudgetsheets::TimeEntryGroupingService
 
   def filtererd_entries_based_on_field_and_id(grouped_entries,custom_field_entries = nil, field_name, id)
     if custom_field_entries.present? && id.blank?
-      grouped_entries
+      return grouped_entries
     elsif custom_field_entries.present?
-      custom_field_entries.where(field_name => id)
+      return custom_field_entries.where(field_name => id)
     else
-      grouped_entries.where(field_name => id)
+      return grouped_entries.where(field_name => id)
     end
-    
-    return grouped_entries
   end
 
   # name for grouped columns
