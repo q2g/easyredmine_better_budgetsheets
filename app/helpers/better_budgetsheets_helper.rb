@@ -1,6 +1,6 @@
 module BetterBudgetsheetsHelper
 
-  def bugdet_sheet_display_value_for(time_entry, col)
+  def bugdet_sheet_display_value_for(time_entry, col, options = {})
     value = nil
 
     @summed_up_values ||= {}
@@ -31,22 +31,43 @@ module BetterBudgetsheetsHelper
       value = time_entry.send(col)
     end
     
-    if value.is_a?(Date) || value.is_a?(DateTime)
-      value.to_de
-    elsif value.is_a?(ActiveSupport::TimeWithZone)
-      value.localtime.to_de
-    elsif value.is_a?(Numeric)
-      @summed_up_values[col] ||= {}
-      suffix = budget_sheet_number_suffix(col, time_entry)
-      @summed_up_values[col][suffix] ||= 0
-      # grouping for different units
-
-      @summed_up_values[col][suffix] += value
+    if options[:value_only] == true
       value
     else
-      value
-    end
+      if value.is_a?(Date) || value.is_a?(DateTime)
+        value.to_de
+      elsif value.is_a?(ActiveSupport::TimeWithZone)
+        value.localtime.to_de
+      elsif value.is_a?(Numeric)
+        @summed_up_values[col] ||= {}
+        suffix = budget_sheet_number_suffix(col, time_entry)
+        @summed_up_values[col][suffix] ||= 0
+        # grouping for different units
 
+        @summed_up_values[col][suffix] += value
+        value
+      else
+        value
+      end
+    end  
+  end
+  
+  def sorted_entries(entries, sorting = nil)
+    if sorting.present?
+      sorting = Array.wrap(sorting)
+      
+      entries.sort_by do |e|
+        sorting.map do |s|
+          current_value = if s.is_a?(Array)
+            bugdet_sheet_display_value_for(e, s[0], value_only: true)
+          else
+            bugdet_sheet_display_value_for(e,s, value_only: true)
+          end
+        end
+      end
+    else
+      entries
+    end
   end
 
   def bugdet_sheet_column_for(time_entry, col)

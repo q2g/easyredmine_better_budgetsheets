@@ -8,7 +8,8 @@ module BetterBudgetsheets
       )
 
       additional_params = {}
-
+      query = nil
+      
       if parsed_query_params['query_id']
         query = EasyQuery.find(parsed_query_params['query_id'])
         additional_params[:query_name] = query.name
@@ -22,9 +23,13 @@ module BetterBudgetsheets
       elsif query
         additional_params[:groups] = query.group_by
       end
+      
+      additional_params[:sort] = parsed_query_params['sort'] || query.try(:sort_criteria)
 
       if additional_params[:columns] && additional_params[:groups]
-
+        
+        additional_params[:sort] = additional_params[:sort].to_json if additional_params[:sort].present?
+        
         [content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_preview_factura),
             better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
             :class => 'icon icon-table'
