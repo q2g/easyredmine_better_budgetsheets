@@ -23,7 +23,7 @@ class BetterBudgetsheets::TimeEntryGroupingService
     @project_names = Project.where(id: @entries.pluck(:project_id)).map do |project|
       #checking if easy_invoicing_client_id is set
       client_id = EasySetting.find_by(name: 'easy_invoicing_client_id', project_id: project.id).try(:value)
-      if client_id
+      if client_id.present?
         c = EasyContact.find(client_id)
         [c.firstname.presence, c.lastname.presence].compact.join(" ")
       else
