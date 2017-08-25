@@ -37,7 +37,7 @@ module BetterBudgetsheets
 
           content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura),
               better_budgetsheets_factura_print_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
-              :class => 'icon icon-print'
+              :class => 'icon icon-print', target: :blank
             )) ].join("").html_safe
       end
     end
