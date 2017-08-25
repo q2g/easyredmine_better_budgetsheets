@@ -1,5 +1,7 @@
 module BetterBudgetsheetsHelper
-
+  
+  include SortHelper
+  
   def bugdet_sheet_display_value_for(time_entry, col, options = {})
     value = nil
 
@@ -55,11 +57,16 @@ module BetterBudgetsheetsHelper
   def sorted_entries(entries, sorting = nil)
     if sorting.present?
       sorting = Array.wrap(sorting)
-      
+
       entries.sort_by do |e|
         sorting.map do |s|
           current_value = if s.is_a?(Array)
-            bugdet_sheet_display_value_for(e, s[0], value_only: true)
+            x = bugdet_sheet_display_value_for(e, s[0], value_only: true)
+            if x.is_a?(Numeric) || x.is_a?(Date) || x.is_a?(DateTime) || x.is_a?(ActiveSupport::TimeWithZone)
+              s[1] == 'asc' ? x : x.to_i * -1
+            else
+              x
+            end
           else
             bugdet_sheet_display_value_for(e,s, value_only: true)
           end
