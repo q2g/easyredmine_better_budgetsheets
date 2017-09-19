@@ -13,7 +13,7 @@ class BetterBudgetsheetsFacturaController < ApplicationController
     load_data
     
     # Uncomment this to enable the automatic locking/billing status
-    # @time_entry_groups.set_locked_and_billed!(current_user)
+    @time_entry_groups.set_locked_and_billed!(User.current)
     
     render  pdf: "#{Time.now.to_date} - #{@query_name} - #{@time_entry_groups.project_names.join(' - ')}".gsub(/\\\/\:\*\?\"\<\>\|/, '_'),
             template: "/better_budgetsheets_factura/sheet",
