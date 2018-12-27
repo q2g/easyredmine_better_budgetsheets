@@ -28,7 +28,7 @@ module BetterBudgetsheets
       
       # js for opening factura and reload parent page
       factura_js = "window.open('#{better_budgetsheets_factura_print_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id)))}', '_blank');window.focus();location.reload();"
-      
+
       if additional_params[:columns] && additional_params[:groups]
         
         additional_params[:sort] = additional_params[:sort].to_json if additional_params[:sort].present?
