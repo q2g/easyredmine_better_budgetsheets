@@ -4,7 +4,7 @@ module BetterBudgetsheets
     def view_time_entries_context_menu_end(context = {})
       # try getting column names from query url of given query
       parsed_query_params = Rack::Utils.parse_query(
-        URI(context[:controller].request.env['HTTP_REFERER']).query
+      URI(context[:controller].request.env['HTTP_REFERER']).query
       )
 
       additional_params = {}
@@ -34,14 +34,19 @@ module BetterBudgetsheets
         additional_params[:sort] = additional_params[:sort].to_json if additional_params[:sort].present?
         
         [content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_preview_factura),
-            better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
-            :class => 'icon icon-table'
-          )),
+        better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
+        :class => 'icon icon-table'
+        )),
+        
+        content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_invoice),
+        create_better_invoice_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
+        :class => 'icon icon-table'
+        )),
 
-          content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura),
-              '#',
-              :class => 'icon icon-print', onclick: factura_js
-            )) ].join("").html_safe
+        content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura),
+        '#',
+        :class => 'icon icon-print', onclick: factura_js
+        )) ].join("").html_safe
       end
     end
 
