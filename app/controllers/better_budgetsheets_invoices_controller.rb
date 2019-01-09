@@ -31,7 +31,7 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
   
   private
   def build_invoice
-    @easy_invoice = new_easy_invoice_with_type
+    @easy_invoice = EasyInvoice.new(:project => @project)
     set_variables_from_template
     @easy_invoice.safe_attributes = params[:easy_invoice]
     if @easy_invoice.easy_invoice_line_items.empty?
@@ -59,6 +59,19 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
         unit_price: ''
       )
     end
+  end
+  
+  def set_variables_from_template
+    if params[:template_id]
+      template = EasyInvoice.templates.find(params[:template_id])
+      @easy_invoice = template.dup
+      @easy_invoice.is_template = false
+      @easy_invoice.easy_invoice_template_id = template.id
+      @easy_invoice.document_id = nil
+      @easy_invoice.copy_dependencies_from_template(template)
+    end
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
   
   

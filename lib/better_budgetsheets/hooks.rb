@@ -28,26 +28,29 @@ module BetterBudgetsheets
       
       # js for opening factura and reload parent page
       factura_js = "window.open('#{better_budgetsheets_factura_print_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id)))}', '_blank');window.focus();location.reload();"
-
+      links = []
       if additional_params[:columns] && additional_params[:groups]
         
         additional_params[:sort] = additional_params[:sort].to_json if additional_params[:sort].present?
-        
-        [content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_preview_factura),
+
+        links << content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_preview_factura),
         better_budgetsheets_factura_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
         :class => 'icon icon-table'
-        )),
+        ))
         
-        content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_invoice),
-        better_budgetsheets_invoices_new_path(additional_params.merge(:time_entry_ids => context[:time_entries].collect(&:id))),
-        :class => 'icon icon-table'
-        )),
-
-        content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura),
-        '#',
-        :class => 'icon icon-print', onclick: factura_js
-        )) ].join("").html_safe
+        
+        links << content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_factura), '#', :class => 'icon icon-print', onclick: factura_js)) 
+        
       end
+      
+      context[:time_entries].map(&:project).uniq.each do |project|
+        links << content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_invoice, project_name: project.name),
+        better_budgetsheets_invoices_new_path(additional_params.merge(project_id: project.id, :time_entry_ids => context[:time_entries].collect(&:id))),
+        :class => 'icon icon-table'
+        ))
+      end
+
+      links.flatten.join("").html_safe
     end
 
   end
