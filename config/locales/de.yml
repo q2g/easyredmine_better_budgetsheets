@@ -3,3 +3,5 @@ de:
   button_better_budgetsheet_preview_factura: "Vorschau Faktura erstellen"
   button_better_budgetsheet_create_invoice: "Rechnung für Projekt %{project_name} erstellen"
   better_budgetsheets_sum: Summe
+  
+  label_project_query_for_better_invoice_id: Filter/Abfrage für Rechnungsanlage

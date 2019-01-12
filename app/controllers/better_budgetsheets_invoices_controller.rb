@@ -33,7 +33,10 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
   
   private
   def build_invoice
-    @easy_invoice = EasyInvoice.new(:project => @project)
+    @easy_invoice = EasyInvoice.new(:project => @project, 
+      performance_from: @line_item_generator.performance_from,
+      performance_to: @line_item_generator.performance_to
+    )
     @easy_invoice.easy_invoice_line_items = @line_item_generator.line_items
     
   end

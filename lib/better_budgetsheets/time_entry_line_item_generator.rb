@@ -1,10 +1,14 @@
 class BetterBudgetsheets::TimeEntryLineItemGenerator
 
-  attr_accessor :project, :projects, :entries, :line_items
+  attr_accessor :project, :projects, :entries, :line_items, :performance_from, :performance_to
   
   def initialize(entry_ids, project_id)
     @project = Project.find(project_id)
     @entries = TimeEntry.where(id: entry_ids)
+    
+    @performance_from = @entries.pluck(:spent_on).min
+    @performance_to = @entries.pluck(:spent_on).max
+    
     
     # group by projects and activities, and rate
     @projects = {}
@@ -19,8 +23,9 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
           # determine the unit rate and sum up total spent hours
           # TODO: Verify where to get settings for internal/external rate
           unit_rate = EasyMoneyRate.get_unit_rate_for_time_entry(entry, 1)
-          @projects[current_project][activity_entry.activity][unit_rate] ||= 0
-          @projects[current_project][activity_entry.activity][unit_rate] += entry.hours
+          @projects[current_project][activity_entry.activity][unit_rate] ||= {value: 0, entry_ids: []}
+          @projects[current_project][activity_entry.activity][unit_rate][:value] += entry.hours
+          @projects[current_project][activity_entry.activity][unit_rate][:entry_ids] << entry.id
         end
         
       end
@@ -53,8 +58,9 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
           result << EasyInvoiceLineItem.new({
             name: "#{project.name} - #{activity.name}",
             unit_price: rate_entry.keys.first,
-            quantity: rate_entry.values.first,
-            vat_rate: EasySetting.value('easy_invoicing_default_vat_rate', project)
+            quantity: rate_entry[:value],
+            unit_name: "Stunden",
+            vat_rate: EasySetting.value('easy_invoicing_default_vat_rate', project),
           })
         end
       end  
