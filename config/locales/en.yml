@@ -2,3 +2,7 @@ en:
   button_better_budgetsheet_create_factura: "Faktura erstellen"
   button_better_budgetsheet_preview_factura: "Vorschau Faktura erstellen"
   better_budgetsheets_sum: Total
+  
+  label_hours: Hours
+  label_pcs: Pcs
+  note_periode_of_perfomance: "Periode of Performance: %{from} - %{to}"

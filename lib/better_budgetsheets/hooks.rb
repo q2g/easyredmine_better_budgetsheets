@@ -45,6 +45,7 @@ module BetterBudgetsheets
       
       
       # TODO: Take care for restrictions (billable, locked etc...)  
+      # TODO: Filter only projects qith invoicing module enabled
       context[:time_entries].map(&:project).uniq.each do |project|
         links << content_tag(:li, context[:hook_caller].context_menu_link(l(:button_better_budgetsheet_create_invoice, project_name: project.name),
         better_budgetsheets_invoices_new_path(additional_params.merge(project_id: project.id, :time_entry_ids => context[:time_entries].collect(&:id))),

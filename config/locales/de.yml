@@ -5,3 +5,6 @@ de:
   better_budgetsheets_sum: Summe
   
   label_project_query_for_better_invoice_id: Filter/Abfrage für Rechnungsanlage
+  label_hours: Stunden
+  label_pcs: Stück
+  note_periode_of_perfomance: "Leistungszeitraum: %{from} - %{to}"

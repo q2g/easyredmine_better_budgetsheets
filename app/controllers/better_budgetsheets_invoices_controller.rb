@@ -17,7 +17,8 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
     end
 
     @easy_invoice.note        ||= EasySetting.value :easy_invoicing_note, @project
-    @easy_invoice.footer_note ||= EasySetting.value :easy_invoicing_footer_note, @project
+    @easy_invoice.footer_note ||= EasySetting.value(:easy_invoicing_footer_note, @project)
+    
     @easy_invoice.transferred_tax_liability_note ||= EasySetting.value :easy_invoicing_transferred_tax_liability_note, @project
     @easy_invoice.status         ||= EasyInvoiceStatus.default
     @easy_invoice.payment_method ||= EasyInvoicePaymentMethod.default
@@ -28,15 +29,13 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
     end
     
     render template: "/easy_invoices/new"
-    
   end
   
   private
   def build_invoice
-    @easy_invoice = EasyInvoice.new(:project => @project, 
-      performance_from: @line_item_generator.performance_from,
-      performance_to: @line_item_generator.performance_to
-    )
+    @easy_invoice = EasyInvoice.new(:project => @project)
+    @easy_invoice.footer_note ||= EasySetting.value(:easy_invoicing_footer_note, @project)
+    @easy_invoice.footer_note << @line_item_generator.periode_of_performance_note
     @easy_invoice.easy_invoice_line_items = @line_item_generator.line_items
     
   end
