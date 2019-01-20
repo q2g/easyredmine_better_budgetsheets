@@ -10,7 +10,7 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
     @performance_to = @entries.pluck(:spent_on).max
     
     @client = EasyContact.find_by(id: EasySetting.value(:easy_invoicing_client_id, @project))
-    @locale = :de
+    @locale = EasySetting.value(:easy_invoicing_default_invoice_locale, @project)
     
     count_cf = CustomField.find_by(internal_name: 'time_entry_count')
       
