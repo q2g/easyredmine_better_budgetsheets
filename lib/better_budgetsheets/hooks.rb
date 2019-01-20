@@ -58,6 +58,8 @@ module BetterBudgetsheets
       links.flatten.join("").html_safe
     end
     
-    
+    def easy_invoicing_invoice_details_bottom(context = {})
+      render "/easy_invoices/query_and_line_item_settings", f: context[:f], invoice: context[:invoice]
+    end
   end
 end
