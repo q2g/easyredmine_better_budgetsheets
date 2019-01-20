@@ -36,5 +36,5 @@ require "better_budgetsheets/hooks"
 require "better_budgetsheets/time_entry_grouping_service"
 require "better_budgetsheets/time_entry_line_item_generator"
 
-require "better_budget_sheets/easy_invoice_extension"
-EasyInvoice.send(:include, BetterBudgetsheets::EasyInvoiceExtension)
+require "better_budgetsheets/easy_invoice_extension"
+require "better_budgetsheets/easy_invoice_line_item_extension"

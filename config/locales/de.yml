@@ -7,4 +7,5 @@ de:
   label_project_query_for_better_invoice_id: Filter/Abfrage für Rechnungsanlage
   label_hours: Stunden
   label_pcs: Stück
+  label_easy_budget_sheet_query: Abfrage für Faktura-Sheet
   note_periode_of_perfomance: "Leistungszeitraum: %{from} - %{to}"

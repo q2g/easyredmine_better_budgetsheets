@@ -1,0 +1,7 @@
+<div class="tabular">
+  <p>
+    <%= f.select :easy_budget_sheet_query, options_for_select(EasyBudgetSheetQuery.where(project_id: [nil, f.object.project_id]).map { |s| [s.name, s.id.to_s] }, f.object.easy_budget_sheet_query_id), label: l(:label_easy_budget_sheet_query) %>
+  </p>
+  <%= f.hidden_field :performance_from %>
+  <%= f.hidden_field :performance_to %>
+</div>

@@ -5,4 +5,5 @@ en:
   
   label_hours: Hours
   label_pcs: Pcs
+  label_easy_budget_sheet_query: Query for Factura-Sheet
   note_periode_of_perfomance: "Periode of Performance: %{from} - %{to}"

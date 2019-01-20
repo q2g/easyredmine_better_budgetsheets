@@ -34,12 +34,11 @@ class BetterBudgetsheetsInvoicesController < ApplicationController
   private
   def build_invoice
     @easy_invoice = EasyInvoice.new(:project => @project)
-    @easy_invoice.footer_note ||= EasySetting.value(:easy_invoicing_footer_note, @project)
-    @easy_invoice.footer_note << @line_item_generator.periode_of_performance_note
+    @easy_invoice.footer_note = @line_item_generator.footer_note
     @easy_invoice.easy_invoice_line_items = @line_item_generator.line_items
+    @easy_invoice.easy_line_item_time_entry_settings = @line_item_generator.line_items.map {|l| }
+    @easy_invoice.performance_from  = @line_item_generator.performance_from
+    @easy_invoice.performance_to    = @line_item_generator.performance_to
   end
-  
-
-  
   
 end

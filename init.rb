@@ -14,4 +14,7 @@ Rails.application.config.after_initialize do
   ActionController::Base.prepend_view_path(view_path)
   locale_path = File.expand_path("../config/locales/custom.*.yml", __FILE__)
   I18n.backend.load_translations
+  
+  EasyInvoice.send(:include, BetterBudgetsheets::EasyInvoiceExtension)
+  EasyInvoiceLineItem.send(:include, BetterBudgetsheets::EasyInvoiceLineItemExtension)
 end

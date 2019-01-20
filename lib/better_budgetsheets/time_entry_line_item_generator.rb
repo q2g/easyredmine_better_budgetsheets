@@ -7,7 +7,7 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
     @entries = TimeEntry.where(id: entry_ids)
     
     @performance_from = @entries.pluck(:spent_on).min
-    @performance_to = @entries.pluck(:spent_on).max
+    @performance_to   = @entries.pluck(:spent_on).max
     
     @client = EasyContact.find_by(id: EasySetting.value(:easy_invoicing_client_id, @project))
     @locale = EasySetting.value(:easy_invoicing_default_invoice_locale, @project)
@@ -56,8 +56,12 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
     end
   end
   
+  def footer_note
+    [EasySetting.value(:easy_invoicing_footer_note, @project).presence, periode_of_performance_note].compact.join("\ns")
+  end
+  
   def periode_of_performance_note
-    ("\n" + I18n.t("note_periode_of_perfomance", locale: @locale, from: @performance_from.to_s, to: @performance_to.to_s))
+    I18n.t("note_periode_of_perfomance", locale: @locale, from: @performance_from.to_s, to: @performance_to.to_s)
   end
   
   def build_line_items
@@ -75,7 +79,7 @@ class BetterBudgetsheets::TimeEntryLineItemGenerator
             quantity: rate_entry[:value],
             unit_name: I18n.t(rate_entry[:fix] ? "label_pcs" : "label_hours", locale: @locale),
             vat_rate: EasySetting.value('easy_invoicing_default_vat_rate', project),
-            
+            time_entry_ids: rate_entry[:entry_ids]
             # TODO store entry_ids for line itemn JOIN TABLE to build invoice-entry  association after saving the invoice
           })
         end

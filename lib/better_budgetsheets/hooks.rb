@@ -59,7 +59,11 @@ module BetterBudgetsheets
     end
     
     def easy_invoicing_invoice_details_bottom(context = {})
-      render "/easy_invoices/query_and_line_item_settings", f: context[:f], invoice: context[:invoice]
+      context[:hook_caller].render "/easy_invoices/query_and_line_item_settings", f: context[:f], invoice: context[:invoice]
+    end
+    
+    def edit_easy_invoice_line_item_first_td(context = {})
+      context[:hook_caller].render "/easy_invoices/line_items_first_td", f: context[:f]
     end
   end
 end
