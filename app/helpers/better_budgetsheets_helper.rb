@@ -1,7 +1,7 @@
 module BetterBudgetsheetsHelper
-  
+
   include SortHelper
-  
+
   def bugdet_sheet_display_value_for(time_entry, col, options = {})
     value = nil
 
@@ -11,8 +11,8 @@ module BetterBudgetsheetsHelper
     if cf = budget_sheet_cf_from_col_name(col)
 
       case cf.type
-      when 'IssueCustomField' 
-        value =time_entry.issue.custom_field_value(cf.id)
+      when 'IssueCustomField'
+        value = time_entry.issue.try(:custom_field_value, cf.id)
       when 'ProjectCustomField'
         value = time_entry.project.custom_field_value(cf.id)
       when 'TimeEntryCustomField'
@@ -25,14 +25,14 @@ module BetterBudgetsheetsHelper
         value = value.to_i
       when 'date'
         value =  Date.parse(value)
-      when 'datetime'    
+      when 'datetime'
         value =  DateTime.parse(value)
       end
 
     else
       value = time_entry.send(col)
     end
-    
+
     if options[:value_only] == true
       value
     else
@@ -51,9 +51,9 @@ module BetterBudgetsheetsHelper
       else
         value
       end
-    end  
+    end
   end
-  
+
   def sorted_entries(entries, sorting = nil)
     if sorting.present?
       sorting = Array.wrap(sorting)
@@ -84,9 +84,9 @@ module BetterBudgetsheetsHelper
 
       if budget_sheet_cf_from_col_name(col).try(:field_format) == 'int'
         v = v.to_de
-      else  
+      else
         v = v.to_euro(budget_sheet_number_suffix(col, time_entry))
-      end  
+      end
       css = "text-right"
     end
 
@@ -113,10 +113,10 @@ module BetterBudgetsheetsHelper
 
   def budget_sheet_header_label(col)
     # first, checking if column in yaml file is present
-    I18n.t(col, 
+    I18n.t(col,
       scope: 'better_budgetsheets_columns',
       default: (budget_sheet_cf_from_col_name(col).try(:name) || I18n.t("field_#{col}"))
-    ).replace_entities  
+    ).replace_entities
   end
 
   def budget_sheet_cf_from_col_name(col)
