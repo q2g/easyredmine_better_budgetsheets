@@ -38,6 +38,9 @@ module BetterBudgetsheetsHelper
       col = col == "asc"? "activity" : col #overwrite col if value is asc; just for testing
       puts "col:"
       puts col
+      if(col=="asc")
+        puts "col IS_ASC"
+      end
       value = time_entry.send(col)
       puts "value:"
       puts value
@@ -90,6 +93,15 @@ module BetterBudgetsheetsHelper
               puts s #show array content
               puts "x:"
               puts x
+              if(s[1] == 'asc')
+                puts "X_STRING:"
+                puts x
+                puts "X_INT:"
+                puts x.to_i
+                puts "s[1] IS_ASC"
+              else
+                puts "s[1] NOT_ASC"
+              end
               s[1] == 'asc' ? x : x.to_i * -1 #asc might cause an error
               puts "after asc:\ns:"
               puts s #show array content
