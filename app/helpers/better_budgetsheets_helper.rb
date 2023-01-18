@@ -35,7 +35,7 @@ module BetterBudgetsheetsHelper
     else
       puts "col:"
       puts col
-      col = col == "asc"? "activity" : col #overwrite col if value is asc; just for testing
+      #col = col == "asc"? "activity" : col #overwrite col if value is asc; just for testing
       puts "col:"
       puts col
       if(col=="asc")
