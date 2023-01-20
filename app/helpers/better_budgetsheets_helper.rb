@@ -46,6 +46,9 @@ module BetterBudgetsheetsHelper
       end
       value = time_entry.send(col)
       #value = time_entry.send("asc") #for debugging, remove later
+      #value = time_entry.send("activity") #for debugging, remove later
+      #value = time_entry.send("") #for debugging, remove later
+      #value = time_entry.send("wrongvalue") #for debugging, remove later
       puts "value:"
       puts value
       puts "Breakpoint"
