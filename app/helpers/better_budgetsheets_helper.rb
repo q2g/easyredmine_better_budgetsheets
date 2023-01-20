@@ -89,7 +89,6 @@ module BetterBudgetsheetsHelper
       puts "sorting sorted"
       puts sorting
       puts "breakpoint"
-    end
 
       #puts "sorted_entries\nbefore loops:\ne:\n"
       #puts e
