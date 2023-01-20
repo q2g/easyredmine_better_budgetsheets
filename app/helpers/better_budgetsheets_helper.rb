@@ -15,7 +15,7 @@ module BetterBudgetsheetsHelper
 
       case cf.type
       when 'IssueCustomField' 
-        value =time_entry.issue.custom_field_value(cf.id)
+        value = time_entry.issue.custom_field_value(cf.id)
       when 'ProjectCustomField'
         value = time_entry.project.custom_field_value(cf.id)
       when 'TimeEntryCustomField'
@@ -31,6 +31,9 @@ module BetterBudgetsheetsHelper
       when 'datetime'    
         value =  DateTime.parse(value)
       end
+      puts "value:"
+      puts value
+      puts "Breakpoint"
 
     else
       puts "col:"
@@ -42,6 +45,7 @@ module BetterBudgetsheetsHelper
         puts "col IS_ASC"
       end
       value = time_entry.send(col)
+      #value = time_entry.send("asc") #for debugging, remove later
       puts "value:"
       puts value
       puts "Breakpoint"
@@ -79,7 +83,13 @@ module BetterBudgetsheetsHelper
   
   def sorted_entries(entries, sorting = nil)
     if sorting.present?
+      puts "sorting unsorted"
+      puts sorting
       sorting = Array.wrap(sorting)
+      puts "sorting sorted"
+      puts sorting
+      puts "breakpoint"
+    end
 
       #puts "sorted_entries\nbefore loops:\ne:\n"
       #puts e
