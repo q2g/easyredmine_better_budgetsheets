@@ -43,6 +43,8 @@ module BetterBudgetsheetsHelper
       puts col
       if(col=="asc")
         puts "col IS_ASC"
+      #else
+      	#value = time_entry.send(col)
       end
       value = time_entry.send(col)
       #value = time_entry.send("asc") #for debugging, remove later
