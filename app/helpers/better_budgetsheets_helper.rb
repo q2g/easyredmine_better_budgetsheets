@@ -79,11 +79,13 @@ module BetterBudgetsheetsHelper
         value
       end
     end
-    puts "after:\ne/x:"
-    puts time_entry
-    puts "\ncol/s:"
-    puts col
-    puts "Breakpoint"
+    ##has to stay commented
+    #else it breaks faktura preview
+    #puts "after:\ne/x:"
+    #puts time_entry
+    #puts "\ncol/s:"
+    #puts col
+    #puts "Breakpoint"
   end
   
   def sorted_entries(entries, sorting = nil)
