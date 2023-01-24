@@ -25,3 +25,11 @@ This Plugin was created by Florian Eck ([EL Digital Solutions](http://www.el-dig
 It is licensed under GNU GENERAL PUBLIC LICENSE.
 
 This Plugin only works with easy redmine
+
+## Fixes
+
+### Language
+
+faktura preview shows "translation missing: de.field_project_id" instead of "Projekt" 
+config/locales/de.yml translates "field_project" (without _id) to "Projekt" in line 365
+adding the line "field_project_id: Projekt" to config/locales/de.yml at line 166 fixes the issue

@@ -4,7 +4,10 @@ module BetterBudgetsheetsHelper
   
   def bugdet_sheet_display_value_for(time_entry, col, options = {})
     value = nil
-
+    puts "bugdet_sheet_display_value_for\nbefore:\ne/x:"
+    puts time_entry
+    puts "\ncol/s:"
+    puts col
     @summed_up_values ||= {}
 
     # assignment, not comparing
@@ -28,9 +31,29 @@ module BetterBudgetsheetsHelper
       when 'datetime'    
         value =  DateTime.parse(value)
       end
+      puts "value:"
+      puts value
+      puts "Breakpoint"
 
     else
-      value = time_entry.send(col)
+      puts "col:"
+      puts col
+      #col = col == "asc"? "activity" : col #overwrite col if value is asc; just for testing
+      puts "col:"
+      puts col
+      if(col=="asc")
+        puts "col is asc, gets ignored"
+      else
+      	value = time_entry.send(col)
+      end
+      #value = time_entry.send(col)
+      #value = time_entry.send("asc") #for debugging, remove later
+      #value = time_entry.send("activity") #for debugging, remove later
+      #value = time_entry.send("") #for debugging, remove later
+      #value = time_entry.send("wrongvalue") #for debugging, remove later
+      puts "value:"
+      puts value
+      puts "Breakpoint"
     end
     
     if options[:value_only] == true
@@ -47,24 +70,65 @@ module BetterBudgetsheetsHelper
         # grouping for different units
 
         @summed_up_values[col][suffix] += value
+        puts "bugdet_sheet_display_value_for\nvalue:"
+        puts value
         value
       else
+        puts "bugdet_sheet_display_value_for\nvalue:"
+        puts value
         value
       end
-    end  
+    end
+    ##has to stay commented
+    #else it breaks faktura preview
+    #puts "after:\ne/x:"
+    #puts time_entry
+    #puts "\ncol/s:"
+    #puts col
+    #puts "Breakpoint"
   end
   
   def sorted_entries(entries, sorting = nil)
     if sorting.present?
+      puts "sorting unsorted"
+      puts sorting
       sorting = Array.wrap(sorting)
+      puts "sorting sorted"
+      puts sorting
+      puts "breakpoint"
 
+      #puts "sorted_entries\nbefore loops:\ne:\n"
+      #puts e
       entries.sort_by do |e|
         sorting.map do |s|
           current_value = if s.is_a?(Array)
             x = bugdet_sheet_display_value_for(e, s[0], value_only: true)
+            #s[1]=nil #for testing purposes, has to be removed later
             if x.is_a?(Numeric) || x.is_a?(Date) || x.is_a?(DateTime) || x.is_a?(ActiveSupport::TimeWithZone)
-              s[1] == 'asc' ? x : x.to_i * -1
+              puts "sorted_entries\nbefore asc:\ns:\n"
+              puts s #show array content
+              puts "x:"
+              puts x
+              if(s[1] == 'asc')
+                puts "X_STRING:"
+                puts x
+                puts "X_INT:"
+                puts x.to_i
+                puts "s[1] IS_ASC"
+              else
+                puts "s[1] NOT_ASC"
+              end
+              s[1] == 'asc' ? x : x.to_i * -1 #asc might cause an error
+              puts "after asc:\ns:"
+              puts s #show array content
+              puts "x:"
+              puts x
+              puts "Breakpoint\n"
             else
+              puts "sorted_entries-else\nbefore x:\ns:\n"
+              puts s #show array content
+              puts "x:"
+              puts x
               x
             end
           else
