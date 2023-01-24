@@ -42,11 +42,11 @@ module BetterBudgetsheetsHelper
       puts "col:"
       puts col
       if(col=="asc")
-        puts "col IS_ASC"
-      #else
-      	#value = time_entry.send(col)
+        puts "col is asc, gets ignored"
+      else
+      	value = time_entry.send(col)
       end
-      value = time_entry.send(col)
+      #value = time_entry.send(col)
       #value = time_entry.send("asc") #for debugging, remove later
       #value = time_entry.send("activity") #for debugging, remove later
       #value = time_entry.send("") #for debugging, remove later
