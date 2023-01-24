@@ -12,7 +12,7 @@ module BetterBudgetsheetsHelper
 
       case cf.type
       when 'IssueCustomField' 
-        value =time_entry.issue.custom_field_value(cf.id)
+        value = time_entry.issue.custom_field_value(cf.id)
       when 'ProjectCustomField'
         value = time_entry.project.custom_field_value(cf.id)
       when 'TimeEntryCustomField'
